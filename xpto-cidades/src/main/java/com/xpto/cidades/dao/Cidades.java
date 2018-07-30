@@ -2,6 +2,7 @@ package com.xpto.cidades.dao;
 
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -26,6 +27,10 @@ public interface Cidades extends JpaRepository<Cidade, Long> {
 	@Query(" FROM Cidade cidade WHERE cidade.ibgeId = ?1")
 	public List<Cidade> buscaCidadesPeloIdIbge(Long ibgeId);
 	
+	@Query("SELECT max(cidade.uf), count(cidade.uf) FROM Cidade cidade Group By cidade.uf Order By count(cidade.uf) desc ")
+	public List<Cidade> buscaEstadoComMaisCidades(Pageable pageable);
 	
+	@Query("SELECT min(cidade.uf), count(cidade.uf) FROM Cidade cidade Group By cidade.uf Order By count(cidade.uf) ")
+	public List<Cidade> buscaEstadoComMenosCidades(Pageable pageable);
 	
 }

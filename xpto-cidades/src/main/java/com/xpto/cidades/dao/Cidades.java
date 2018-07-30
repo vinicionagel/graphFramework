@@ -11,23 +11,21 @@ import com.xpto.cidades.model.Cidade;
 
 public interface Cidades extends JpaRepository<Cidade, Long> {
 
-	@Query("SELECT cidade FROM Cidade cidade WHERE cidade.capital = true order by cidade.nome")
+	@Query(" FROM Cidade cidade WHERE cidade.capital = true order by cidade.nome")
     public List<Cidade> buscaSomenteCapitaisOrdenadosPorNome();
 	
-	@Query("SELECT count(cidade) FROM Cidade cidade "
-			+ " ")
+	@Query("SELECT count(cidade) FROM Cidade")
     public Long buscaQuantidadeDeRegistros();
 	
-	@Query("SELECT cidade.nome FROM Cidade cidade "
-			+ "WHERE lower(cidade.uf) = lower(?1)")
+	@Query("SELECT cidade.nome FROM Cidade cidade WHERE lower(cidade.uf) = lower(?1)")
 	public List<Cidade> buscaCidadesPorEstadoSelecionado(String estado);
 	
-	@Query("SELECT count(cidade), cidade.uf FROM Cidade cidade "
-			+ " group by cidade.uf ")
+	@Query("SELECT count(cidade), cidade.uf FROM Cidade cidade  group by cidade.uf ")
 	public List<Cidade> buscaQuantidadeCidadesPorEstado();
 	
-	@Query(" FROM Cidade cidade "
-			+ "WHERE cidade.ibgeId = ?1")
+	@Query(" FROM Cidade cidade WHERE cidade.ibgeId = ?1")
 	public List<Cidade> buscaCidadesPeloIdIbge(Long ibgeId);
+	
+	
 	
 }

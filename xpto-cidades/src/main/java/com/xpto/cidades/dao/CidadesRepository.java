@@ -5,12 +5,13 @@ import java.util.List;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import com.xpto.cidades.model.Cidade;
 
 
-
-public interface Cidades extends JpaRepository<Cidade, Long> {
+@Repository
+public interface CidadesRepository extends JpaRepository<Cidade, Long>, CidadesRepositoryCustom {
 
 	@Query(" FROM Cidade cidade WHERE cidade.capital = true order by cidade.nome")
     public List<Cidade> buscaSomenteCapitaisOrdenadosPorNome();
@@ -32,6 +33,6 @@ public interface Cidades extends JpaRepository<Cidade, Long> {
 	
 	@Query("SELECT min(cidade.uf), count(cidade.uf) FROM Cidade cidade Group By cidade.uf Order By count(cidade.uf) ")
 	public List<Cidade> buscaEstadoComMenosCidades(Pageable pageable);
-
+	
 	
 }

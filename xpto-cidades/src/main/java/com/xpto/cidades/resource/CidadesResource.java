@@ -1,5 +1,6 @@
 package com.xpto.cidades.resource;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import com.xpto.cidades.dao.Cidades;
+import com.xpto.cidades.dao.CidadesRepository;
 import com.xpto.cidades.leituracsv.LeituraCSV;
 import com.xpto.cidades.model.Cidade;
 import com.xpto.cidades.service.CidadeService;
@@ -25,7 +26,7 @@ import com.xpto.cidades.util.CalculoDistanciaUtil;
 public class CidadesResource {
 
 	@Autowired
-	private Cidades cidades;
+	private CidadesRepository cidades;
 	
 	@Autowired
 	private CidadeService cidadeService;
@@ -44,6 +45,12 @@ public class CidadesResource {
 	@GetMapping("cidadesPorEstado")
 	public List<Cidade> buscaCidadesPorEstadoSelecionado(@RequestParam String estado){
 		return cidades.buscaCidadesPorEstadoSelecionado(estado);
+	}
+	
+	
+	@GetMapping("cidadesPorColuna")
+	public BigInteger buscaCidadesPorColuna(@RequestParam String coluna){
+		return cidades.buscaPelaColuna(coluna);
 	}
 	 
 	@GetMapping("quantidadeRegistros")
@@ -76,14 +83,14 @@ public class CidadesResource {
 		HashSet<Cidade> cidadesDestino = new HashSet<>(cidades.findAll());
 		for (Cidade cidadeFonte: cidadesFonte) {
 			for (Cidade cidadeDestino: cidadesDestino) {
-				double distancia = CalculoDistanciaUtil.distanciaEmKM(cidadeFonte.getLatitude().doubleValue(), 
+				double distanciaEntreFonteEDestino = CalculoDistanciaUtil.distanciaEmKM(cidadeFonte.getLatitude().doubleValue(), 
 						cidadeFonte.getLongitude().doubleValue(), 
 						cidadeDestino.getLatitude().doubleValue(), 
 						cidadeDestino.getLongitude().doubleValue());
-				if (distancia > cidadeMaiorDistancia.getDistanciaEntreDestino()) {
+				if (distanciaEntreFonteEDestino > cidadeMaiorDistancia.getDistanciaEntreDestino()) {
 					cidadeMaiorDistancia = cidadeFonte;
 					cidadeMaiorDistancia.setCidadeDestino(cidadeDestino);
-					cidadeMaiorDistancia.setDistanciaEntreDestino(distancia);
+					cidadeMaiorDistancia.setDistanciaEntreDestino(distanciaEntreFonteEDestino);
 				}
 			}
 			cidadesDestino.remove(cidadeFonte);

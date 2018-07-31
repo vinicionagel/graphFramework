@@ -2,6 +2,7 @@ package com.xpto.cidades.model;
 
 import java.math.BigDecimal;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,24 +16,34 @@ public class Cidade {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
+	@Column(name = "ibge_id")
 	private Long ibgeId;
 	
+	@Column(name = "uf")
 	private String uf;
 	
+	@Column(name = "name")
 	private String nome;
 	
+	@Column(name = "capital")
 	private boolean capital;
 	
+	@Column(name = "lon")
 	private BigDecimal longitude;
 	
+	@Column(name = "lat")
 	private BigDecimal latitude;
 	
+	@Column(name = "no_accents")
 	private String nomeSemAcentos;
 	
+	@Column(name = "alternative_names")
 	private String nomeAlternativo;
 	
+	@Column(name = "microregion")
 	private String microRegiao;
 	
+	@Column(name = "mesoregion")
 	private String grandeRegiao;
 	
 	@Transient

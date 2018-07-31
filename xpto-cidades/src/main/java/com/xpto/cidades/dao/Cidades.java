@@ -32,5 +32,6 @@ public interface Cidades extends JpaRepository<Cidade, Long> {
 	
 	@Query("SELECT min(cidade.uf), count(cidade.uf) FROM Cidade cidade Group By cidade.uf Order By count(cidade.uf) ")
 	public List<Cidade> buscaEstadoComMenosCidades(Pageable pageable);
+
 	
 }

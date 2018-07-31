@@ -1,12 +1,12 @@
 package com.xpto.cidades.resource;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +18,7 @@ import com.xpto.cidades.dao.Cidades;
 import com.xpto.cidades.leituracsv.LeituraCSV;
 import com.xpto.cidades.model.Cidade;
 import com.xpto.cidades.service.CidadeService;
+import com.xpto.cidades.util.CalculoUtil;
 
 @CrossOrigin("*")
 @RestController("")
@@ -68,6 +69,28 @@ public class CidadesResource {
 		return cidadeMaisEMenosMunicipios;
 	}
 	
+	@GetMapping(value = "calculaDistanciaCidadeMaisLonges") 
+	public Cidade calculaDistanciaCidadeMaisLonges() {
+		Cidade cidadeMaiorDistancia = new Cidade();
+		List<Cidade> cidadesFonte = cidades.findAll();
+		HashSet<Cidade> cidadesDestino = new HashSet<>(cidades.findAll());
+		for (Cidade cidadeFonte: cidadesFonte) {
+			for (Cidade cidadeDestino: cidadesDestino) {
+				double distancia = CalculoUtil.distanciaEmKM(cidadeFonte.getLatitude().doubleValue(), 
+						cidadeFonte.getLongitude().doubleValue(), 
+						cidadeDestino.getLatitude().doubleValue(), 
+						cidadeDestino.getLongitude().doubleValue());
+				if (distancia > cidadeMaiorDistancia.getDistanciaEntreDestino()) {
+					cidadeMaiorDistancia = cidadeFonte;
+					cidadeMaiorDistancia.setCidadeDestino(cidadeDestino);
+					cidadeMaiorDistancia.setDistanciaEntreDestino(distancia);
+				}
+			}
+			cidadesDestino.remove(cidadeFonte);
+		}
+		return cidadeMaiorDistancia;	
+	}
+	
 	@PostMapping("novaCidade")
 	public Cidade adicionarCidade(@RequestBody @Valid Cidade cidade) {
 		return cidadeService.adicionarCidade(cidade);	
@@ -77,7 +100,6 @@ public class CidadesResource {
 	public String removerCidade(@RequestBody @Valid Cidade cidade) {
 		return cidadeService.removerCidade(cidade);	
 	}
-	
 	
 	
 }

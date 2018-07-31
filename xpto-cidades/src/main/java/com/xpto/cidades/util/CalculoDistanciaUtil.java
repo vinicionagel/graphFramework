@@ -1,6 +1,6 @@
 package com.xpto.cidades.util;
 
-public class CalculoUtil {
+public class CalculoDistanciaUtil {
 	
     public static double distanciaEmKM(double lat1, double lon1, double lat2, double lon2) {
         double theta = lon1 - lon2;

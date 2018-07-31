@@ -18,7 +18,7 @@ import com.xpto.cidades.dao.Cidades;
 import com.xpto.cidades.leituracsv.LeituraCSV;
 import com.xpto.cidades.model.Cidade;
 import com.xpto.cidades.service.CidadeService;
-import com.xpto.cidades.util.CalculoUtil;
+import com.xpto.cidades.util.CalculoDistanciaUtil;
 
 @CrossOrigin("*")
 @RestController("")
@@ -76,7 +76,7 @@ public class CidadesResource {
 		HashSet<Cidade> cidadesDestino = new HashSet<>(cidades.findAll());
 		for (Cidade cidadeFonte: cidadesFonte) {
 			for (Cidade cidadeDestino: cidadesDestino) {
-				double distancia = CalculoUtil.distanciaEmKM(cidadeFonte.getLatitude().doubleValue(), 
+				double distancia = CalculoDistanciaUtil.distanciaEmKM(cidadeFonte.getLatitude().doubleValue(), 
 						cidadeFonte.getLongitude().doubleValue(), 
 						cidadeDestino.getLatitude().doubleValue(), 
 						cidadeDestino.getLongitude().doubleValue());

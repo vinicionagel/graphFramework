@@ -8,11 +8,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.xpto.cidades.dao.CidadesRepository;
 import com.xpto.cidades.model.Cidade;
 
 @Service
@@ -40,8 +36,7 @@ public class LeituraCSV {
 	    		cidade.setMicroRegiao(dados[8]);
 	    		cidade.setGrandeRegiao(dados[9]);
 	    		return cidade;
-	    		}).parallel().collect(Collectors.toList());
-	    	
+	    	}).parallel().collect(Collectors.toList());
 	    	reader.close();
 	    } catch (IOException e) {
 	    	e.printStackTrace();

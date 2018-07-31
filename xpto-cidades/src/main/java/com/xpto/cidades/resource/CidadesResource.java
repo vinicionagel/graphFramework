@@ -47,6 +47,10 @@ public class CidadesResource {
 		return cidades.buscaCidadesPorEstadoSelecionado(estado);
 	}
 	
+	@GetMapping("cidadesPorColunaEStringFilter")
+	public List<Cidade> buscaCidadesPorColuna(@RequestParam String coluna, String filter){
+		return cidades.buscaPelaColunaETexto(coluna, filter);
+	}
 	
 	@GetMapping("cidadesPorColuna")
 	public BigInteger buscaCidadesPorColuna(@RequestParam String coluna){

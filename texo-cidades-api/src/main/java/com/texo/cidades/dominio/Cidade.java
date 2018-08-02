@@ -1,4 +1,4 @@
-package com.xpto.cidades.model;
+package com.texo.cidades.dominio;
 
 import java.math.BigDecimal;
 
@@ -7,7 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Transient;
 
 @Entity
 public class Cidade {
@@ -46,11 +45,6 @@ public class Cidade {
 	@Column(name = "mesoregion")
 	private String grandeRegiao;
 	
-	@Transient
-	private Cidade cidadeDestino;
-	
-	@Transient
-	private double distanciaEntreDestino;
 	
 	public Long getId() {
 		return id;
@@ -139,22 +133,6 @@ public class Cidade {
 	public void setGrandeRegiao(String grandeRegiao) {
 		this.grandeRegiao = grandeRegiao;
 	}
-	
-	public Cidade getCidadeDestino() {
-		return cidadeDestino;
-	}
-
-	public void setCidadeDestino(Cidade cidadeDestino) {
-		this.cidadeDestino = cidadeDestino;
-	}
-	
-	public double getDistanciaEntreDestino() {
-		return distanciaEntreDestino;
-	}
-
-	public void setDistanciaEntreDestino(double distanciaEntreDestino) {
-		this.distanciaEntreDestino = distanciaEntreDestino;
-	}
 
 	@Override
 	public int hashCode() {
@@ -206,12 +184,6 @@ public class Cidade {
 		builder.append(microRegiao);
 		builder.append(", grandeRegiao=");
 		builder.append(grandeRegiao);
-		builder.append("]");
-		builder.append(", Destino=");
-		builder.append(cidadeDestino.getNome());
-		builder.append("]");
-		builder.append(", KMS=");
-		builder.append(cidadeDestino.getDistanciaEntreDestino());
 		builder.append("]");
 		return builder.toString();
 	}

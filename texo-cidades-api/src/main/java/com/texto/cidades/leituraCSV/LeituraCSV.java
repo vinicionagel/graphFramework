@@ -1,4 +1,4 @@
-package com.xpto.cidades.leituracsv;
+package com.texto.cidades.leituraCSV;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -9,13 +9,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
-import com.xpto.cidades.model.Cidade;
+
+import com.texo.cidades.dominio.Cidade;
 
 @Service
 public class LeituraCSV {
 	
 	private static final String VIRGULA = ",";
-	private static final String CAMINHO = "C:\\\\Users\\\\vinicio\\\\Documents\\\\workspace-sts-3.9.4.RELEASE\\\\xpto-cidades\\\\base de dados cidades\\\\Trabalho Java - Cidades.csv";
+	private static final String CAMINHO = "C:\\Users\\vinicio\\Documents\\workspace-sts-3.9.4.RELEASE\\texo-cidades-api\\base de dados\\Trabalho Java - Cidades.csv";
 	
 	
 	public List<Cidade> processaCVS() {

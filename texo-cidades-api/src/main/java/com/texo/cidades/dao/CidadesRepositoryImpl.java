@@ -1,4 +1,4 @@
-package com.xpto.cidades.dao;
+package com.texo.cidades.dao;
 
 import java.math.BigInteger;
 import java.util.List;
@@ -9,7 +9,7 @@ import javax.persistence.Query;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import com.xpto.cidades.model.Cidade;
+import com.texo.cidades.dominio.Cidade;
 
 import org.springframework.stereotype.Repository;
 
@@ -20,12 +20,6 @@ public class CidadesRepositoryImpl implements CidadesRepositoryCustom {
 
     @PersistenceContext
     EntityManager entityManager;
-
-	@Override
-	public BigInteger buscaPelaColuna(String nome) {
-		Query query = entityManager.createNativeQuery("SELECT count (DISTINCT em."+nome+" ) FROM Cidade em ");
-        return (BigInteger) query.getSingleResult();
-	}
 
 	@Override
 	public List<Cidade> buscaPelaColunaETexto(String coluna, String texto) {

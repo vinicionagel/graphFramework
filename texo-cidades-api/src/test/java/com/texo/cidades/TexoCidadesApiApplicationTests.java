@@ -1,4 +1,4 @@
-package com.xpto.cidades;
+package com.texo.cidades;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -7,7 +7,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class CidadesApi1ApplicationTests {
+public class TexoCidadesApiApplicationTests {
 
 	@Test
 	public void contextLoads() {

@@ -1,10 +1,14 @@
-package com.xpto.cidades.service;
+package com.texo.cidades.service;
+
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.xpto.cidades.dao.CidadesRepository;
-import com.xpto.cidades.model.Cidade;
+import com.texo.cidades.dao.CidadesRepository;
+import com.texo.cidades.dominio.Cidade;
+
+
 
 @Service
 public class CidadeService {
@@ -16,9 +20,13 @@ public class CidadeService {
 		return cidades.save(cidade);
 	}
 	
-	public String removerCidade(Cidade cidade) {
+	public void removerCidade(Cidade cidade) {
 		cidades.delete(cidade);
-		return "Cidade Removida";
 	}
+	
+
+    public void saveAll(List<Cidade> cidadesAdicionar) {
+        cidades.saveAll(cidadesAdicionar);
+    }
 
 }

@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 44
+/svn/!svn/ver/13/trunk/graphos/src/graphCore
+END
+EdgeInterface.java
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/!svn/ver/3/trunk/graphos/src/graphCore/EdgeInterface.java
+END
+GraphInterface.java
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/!svn/ver/15/trunk/graphos/src/graphCore/GraphInterface.java
+END
+VertexInterface.java
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/15/trunk/graphos/src/graphCore/VertexInterface.java
+END

@@ -1,0 +1,107 @@
+package searchGraph;
+
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Queue;
+
+import javax.swing.JOptionPane;
+
+import searchGraphCore.BFSAtribute;
+import searchGraphCore.Color;
+import graph.Graph;
+import graph.Vertex;
+/**
+ * 
+ * @author Roland e Vinicio.
+ * Classe que representa a busca em largura
+ */
+public class AlgBFS{
+	
+
+	
+	/**
+	 * Grafo que é passado como parametro, para a busca em largura
+	 */
+	private Graph g;
+	/**
+	 * Vértice inicial
+	 */
+	private Vertex s;
+	/**
+	 * HashMap dos atributos do algoritmo de busca
+	 */
+	private Map<String,BFSAtribute> bfsAtribute = new HashMap<String,BFSAtribute>();
+	/**
+	 * Fila auxiliar do algoritmo 
+	 */
+	private Queue<Vertex> fila = new LinkedList<>();
+	
+	/**
+	 * 
+	 * @param g grafo
+	 * @param s vertice inicial
+	 * @param inicial primeiro vertice
+	 * @param finals vertice final
+	 */
+	public AlgBFS(Graph g, String idInicial,String idFinals) {
+		this.g = g;
+		this.s = g.getGraphVertex().get(idInicial);
+		BFS();
+		imprimirCaminho(idInicial, idFinals);
+	}
+	/**
+	 * Método responsavel por fazer a busca em largura
+	 */
+	private void BFS(){
+		Vertex u = null;
+		for (Entry<String, Vertex> v: g.getGraphVertex().entrySet()){
+			bfsAtribute.put(v.getKey(), new BFSAtribute(Double.NaN,null,Color.BRANCO));
+		}
+		
+		bfsAtribute.get(s.getId()).setDistancia(0D);
+		bfsAtribute.get(s.getId()).setCor(Color.CINZA);
+		fila.add(s);
+		while (!fila.isEmpty()){
+			u = fila.remove();
+				for (Vertex v :u.getAdjacentList()){
+					if (bfsAtribute.get(v.getId()).getCor().equals(Color.BRANCO)){
+						fila.add(v);
+						bfsAtribute.get(v.getId()).setCor(Color.CINZA);
+						bfsAtribute.get(v.getId()).setAntecessor(u);
+						bfsAtribute.get(v.getId()).setDistancia(bfsAtribute.get(u.getId()).getDistancia()+1);
+					}
+				
+				}
+				bfsAtribute.get(u.getId()).setCor(Color.PRETO);
+		}
+	}
+	/**
+	 * método que imprimi a busca, junto com sua distancia.
+	 * @param idInicial
+	 * @param idFinal
+	 */
+	private void imprimirCaminho(String idInicial, String idFinal){
+		this.g.getSolucao().add(idFinal);
+		if (idFinal.equals(idInicial)){
+			System.out.print("->"+idFinal+" Distancia "+ bfsAtribute.get(idFinal).getDistancia()+"\n");
+		}else{
+			if (bfsAtribute.get(idFinal) == null || bfsAtribute.get(idFinal).getAntecessor() == null){
+				Thread t = new Thread(new Runnable(){
+			        public void run(){
+			            JOptionPane.showMessageDialog(null, "Não existe caminho de s para v");
+			        }
+			    });
+			  t.start();
+			}else{
+				imprimirCaminho(idInicial,bfsAtribute.get(idFinal).getAntecessor().getId());
+				System.out.print("->"+idFinal+" Distancia "+ bfsAtribute.get(idFinal).getDistancia()+"\n");
+			}
+		}
+	}
+}
+	
+

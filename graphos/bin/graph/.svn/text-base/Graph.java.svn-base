@@ -1,0 +1,297 @@
+package graph;
+
+
+import edu.uci.ics.jung.algorithms.layout.CircleLayout;
+import edu.uci.ics.jung.graph.DelegateForest;
+import edu.uci.ics.jung.graph.DirectedSparseGraph;
+import edu.uci.ics.jung.graph.Forest;
+import edu.uci.ics.jung.visualization.VisualizationImageServer;
+import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;
+import edu.uci.ics.jung.visualization.util.LabelWrapper;
+import graphCore.GraphInterface;
+
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Paint;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import javax.swing.JFrame;
+
+import org.apache.commons.collections15.Factory;
+import org.apache.commons.collections15.Transformer;
+import org.apache.commons.collections15.functors.ConstantTransformer;
+
+import screen.PrintDirectedSparseGraph;
+import screen.PrintTree;
+
+/**
+ * 
+ * @author Roland e Vinicio.
+ * Classe que representa o grafo
+ */
+public class Graph implements GraphInterface {
+
+	private Map<String,Vertex> graphVertex = new HashMap<String,Vertex>();
+	private ArrayList<Edge> graphEdgsList = new ArrayList<>(); 
+	private Forest<String, Integer> graphTree = new DelegateForest<>();
+	private DirectedSparseGraph directedSparseGraph = new DirectedSparseGraph();
+	private HashSet<String> solucao = new HashSet<String>();
+	
+	@Override
+	protected Object clone() throws CloneNotSupportedException {
+		return super.clone();
+	}
+	
+	/**
+	 * @return retorna quantidade de vertices
+	 */
+	@Override
+	public int getOrder() {
+		return graphVertex.size();
+	}
+	
+	/**
+	 * @return retorna quantidade de arestas
+	 */
+	@Override
+	public int getSize() {
+		return graphEdgsList.size();
+	}
+	
+	/**
+	 * @return retorna o numero de vertices
+	 */
+	@Override
+	public int V() {
+		return graphVertex.size();
+	}	
+	
+	/**
+	 * @return retorna o numero de arestas
+	 */
+	@Override
+	public int E() {
+		return graphEdgsList.size();
+	}
+	/**
+	 * 
+	 */
+	@Override
+	public void addVertex(int id) {
+		
+		
+	}
+
+	@Override
+	public void addEdge(int vi, int vj, double valor) {
+		
+	}
+	
+	/**
+	 * Método para adicionar vertice ao grafo,
+	 * melhorar parte se já tiver o id adicionado
+	 */
+	@Override
+	public void addVertex(String id) {
+		if (graphVertex.get(id) == null){ 
+			graphVertex.put(id, new Vertex(id));
+			directedSparseGraph.addVertex(id);
+		}
+	}
+	
+	/**
+	 * <li>Método auxiliar para contrucao de aresta</li>
+	 * @param vi
+	 * @param vj
+	 * @return string do identificador de aresta
+	 */
+	private String createStringEdge(String vi, String vj){
+		StringBuilder builder = new StringBuilder();
+		builder.append(edgeFactory.create()).append(" ").append(vi).append(" ").append(vj);
+		return builder.toString();
+	}
+	
+	/**
+	 * Método auxiliar para adicionar aresta em sparseGraph
+	 * @param edge
+	 * @param vi
+	 * @param vj
+	 */
+	private void addEndgeAuxDirectedSparseGraph(Edge edge){
+		graphEdgsList.add(edge);
+		Vertex vi = edge.getVi();
+		Vertex vj = edge.getVj();
+		vi.getedgesList().add(edge);
+		vj.getedgesList().add(edge);
+		vi.getAdjacentList().add(vj);
+		vj.getAdjacentList().add(vi);
+	}
+	/**
+	 * Método para adicionar arestas ao grafo, 
+	 * necessario já ter dois vertices adicionados.
+	 * @param vi, vj 
+	 */
+	@Override
+	public void addEdge(Vertex vi, Vertex vj, double valor) {
+		Edge edge = new Edge(vi, vj, valor);
+		directedSparseGraph.addEdge(createStringEdge(vi.getId(),vj.getId()), vi.getId(), vj.getId());
+		addEndgeAuxDirectedSparseGraph(edge);
+	}
+	
+	/**
+	 * Método para adicionar arestas ao grafo, 
+	 * necessario já ter dois vertices adicionados.
+	 * @param vi, vj 
+	 */
+	@Override
+	public void addEdge(String vi, String vj, double valor) {
+		Edge edge = new Edge(this.getGraphVertex().get(vi), this.getGraphVertex().get(vj), valor);
+		directedSparseGraph.addEdge(createStringEdge(vi,vj), vi, vj);
+		addEndgeAuxDirectedSparseGraph(edge);
+	}
+	
+	/**
+	 * retorna true se for adjacent ou false se não for.
+	 */
+	@Override
+	public boolean adjacent(Vertex vi, Vertex vj) {
+		return !(adjacentAux(vi,vj) == null);
+	}
+	
+	/**
+	 * método auxiliar para retornar a aresta pelos vertices
+	 * @param vi
+	 * @param vj
+	 * @return
+	 */
+	public Edge adjacentAux(Vertex vi, Vertex vj){
+		for (Edge edge: graphEdgsList){
+			if ((edge.getVi().equals(vi) && edge.getVj().equals(vj)) 
+					|| ((edge.getVi().equals(vj)) && edge.getVj().equals(vi))){
+				return edge;
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Método para deletar vertice. 
+	 * Deletado se existir suas arestas 
+	 * @param id do vertice
+	 */
+	@Override
+	public void removeVertex(String id) {
+		Vertex vertex = new Vertex(id);
+		for (Vertex vj: getGraphVertex().get(id).getAdjacentList()){
+			if (!vj.equals(vertex)){
+				getGraphVertex().get(vj.getId()).getedgesList().remove(new Edge(vertex, vj, 0D));
+				getGraphVertex().get(vj.getId()).getAdjacentList().remove(vertex);
+			}
+		}
+		getGraphEdgsList().removeAll(getGraphVertex().get(id).getedgesList());
+		graphVertex.remove(id);
+	}
+	
+	/**
+	 * deleta aresta se exister 
+	 * @param vi, vj 
+	 */
+	@Override
+	public void removeEdge(Vertex vi, Vertex vj) {
+		Edge edge = new Edge(vi, vj, 0D);
+		vi.getedgesList().remove(edge);
+		vj.getedgesList().remove(edge);
+		vi.getAdjacentList().remove(vj);
+		vj.getAdjacentList().remove(vi);
+		graphEdgsList.remove(edge);
+	}
+	
+	/**
+	 * @return hashMap de vertices
+	 */
+	public Map<String, Vertex> getGraphVertex() {
+		return graphVertex;
+	}
+	
+	/**
+	 * @return lista de arestas.
+	 */
+	public ArrayList<Edge> getGraphEdgsList() {
+		return graphEdgsList;
+	}
+	/**
+	 * Método do JUNG
+	 */
+    Factory<String> edgeFactory = new Factory<String>() {
+        int i = 0;
+        
+        @Override
+        public String create() {
+            return i++ +"" ;
+        }
+    };
+    /**
+	 * Método do JUNG
+	 */
+    Factory<String> vertexFactory = new Factory<String>() {
+        int i = 0;
+
+        @Override
+        public String create() {
+            return "V" + i++;
+        }
+    };
+	
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Graph [graphVertex=");
+		builder.append("\n");
+		for (Entry<String, Vertex> entry : getGraphVertex().entrySet()) {
+			builder.append(entry.getKey());
+			builder.append(":");
+			builder.append(entry.getValue().getAdjacentList());
+			builder.append("\n");
+		}
+		return builder.toString();
+	}
+	
+	/**
+	 * <li> Método para imprimir somente em forma de árvore com todas as validacoes </li>
+	 */
+    protected void imprimirArvore(){
+        JFrame frame = new JFrame();
+        Container content = frame.getContentPane();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        content.add(new PrintTree(graphTree,new HashSet<String>()));            
+        frame.pack();
+        frame.setVisible(true);            
+    }
+
+	/**
+	 * <li> Imprimi grafo em forma circular </li>
+	 */
+    protected void imprimirGrafoEsparco(){
+    	JFrame frame = new JFrame();
+        Container content = frame.getContentPane();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        content.add(new PrintDirectedSparseGraph(directedSparseGraph,solucao));            
+        frame.pack();
+        frame.setVisible(true);  
+    }
+
+	public HashSet<String> getSolucao() {
+		return solucao;
+	}
+
+	public void setSolucao(HashSet<String> solucao) {
+		this.solucao = solucao;
+	}
+    
+
+}

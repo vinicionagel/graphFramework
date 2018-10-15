@@ -1,0 +1,99 @@
+package searchGraph;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import searchGraphCore.Color;
+import searchGraphCore.DFSATribute;
+
+import graph.Graph;
+import graph.Vertex;
+
+/**
+ * 
+ * @author Roland e Vinicio.
+ * Classe que representa a busca em profundidade
+ */
+public class AlgDFS {
+	/**
+	 * grafo
+	 */
+	private Graph g;
+	/**
+	 * Hash map do atributo
+	 */
+	private Map<String, DFSATribute> d = new HashMap<String, DFSATribute>();
+	/**
+	 * tempo
+	 */
+	private int tempo;
+	/**
+	 * @param g grafo que vai ser usado
+	 * @param idInicial idInicial do vertice
+	 * @param idFinal idFinal do vertice
+	 */
+	public AlgDFS(Graph g,String idInicial, String idFinal) {
+		this.g = g;
+		DFS();
+		imprimirCaminho(idInicial, idFinal);
+	}
+	/**
+	 * Método responsavel pela busca em profundidade
+	 */
+	private void DFS(){
+		for (Entry<String, Vertex> v: g.getGraphVertex().entrySet()){
+			DFSATribute atributo = new DFSATribute();
+			atributo.setCor(Color.BRANCO);
+			atributo.setAntecessor(null);
+			d.put(v.getKey(), atributo);
+		}
+		for (Entry<String, DFSATribute> u: d.entrySet()){
+			if (u.getValue().getCor() == Color.BRANCO){
+				DFSVisit(g.getGraphVertex().get(u.getKey()));
+			}
+		}
+	}
+	/**
+	 * Método que vai visitando os vertices e colocando o tempo de abertura e fechamento
+	 * @param u vértice atual
+	 */
+	private void DFSVisit(Vertex u){
+		tempo++;
+		DFSATribute x = d.get(u.getId());
+		x.setCor(Color.CINZA);
+		x.setTempoDescoberta(tempo);
+		d.put(u.getId(),x);
+		for (Vertex v: u.getAdjacentList()){
+			if (d.get(v.getId()).getCor().equals(Color.BRANCO)){
+				DFSATribute an = d.get(v.getId());
+				an.setAntecessor(u);
+				d.put(v.getId(),an);
+				DFSVisit(v);
+			}
+		}
+		DFSATribute an = d.get(u.getId());
+		an.setCor(Color.PRETO);
+		an.setTempoFechamento(++tempo);
+		d.put(u.getId(), an);
+	}
+	/**
+	 * Imprimi o caminho junto com o tempo de abertura/fechamento.
+	 * @param idInicial
+	 * @param idFinal
+	 */
+	private void imprimirCaminho(String idInicial, String idFinal){
+		if (idFinal.equals(idInicial)){
+			System.out.print("->"+idFinal+" Tempo abertura "
+					+d.get(idFinal).getTempoDescoberta()+" Tempo de Fechamento "+d.get(idFinal).getTempoFechamento()+"\n");
+		}else{
+			if (d.get(idFinal).getAntecessor() == null){
+				System.out.println("Não existe caminho s para v");
+			}else{
+				imprimirCaminho(idInicial,d.get(idFinal).getAntecessor().getId());
+				System.out.print("->"+idFinal+" Tempo abertura "
+				+d.get(idFinal).getTempoDescoberta()+" Tempo de Fechamento "+d.get(idFinal).getTempoFechamento()+"\n");
+			}
+		}
+	}
+}

@@ -1,0 +1,109 @@
+package testes;
+
+import dijkstra.Dijkstra;
+import graph.Graph;
+
+public class ClassesTeste extends Graph {
+	
+	public ClassesTeste() {
+		
+	}
+	
+	public static void main(String[] args) {
+		new ClassesTeste().implementaGrafo();
+	}
+	
+	public void implementaGrafo(){
+		for (int i = 1; i<10; i++){
+			this.addVertex(String.valueOf(i));
+		}
+		
+		this.addEdge(this.getGraphVertex().get("1"), this.getGraphVertex().get("2"), 4D);
+		this.addEdge(this.getGraphVertex().get("1"), this.getGraphVertex().get("8"), 8D);
+		this.addEdge(this.getGraphVertex().get("2"), this.getGraphVertex().get("8"), 11D);
+		this.addEdge(this.getGraphVertex().get("2"), this.getGraphVertex().get("3"), 8D);
+		this.addEdge(this.getGraphVertex().get("3"), this.getGraphVertex().get("4"), 7D);
+		this.addEdge(this.getGraphVertex().get("3"), this.getGraphVertex().get("9"), 2D);
+		this.addEdge(this.getGraphVertex().get("3"), this.getGraphVertex().get("6"), 4D);
+		this.addEdge(this.getGraphVertex().get("4"), this.getGraphVertex().get("5"), 9D);
+		this.addEdge(this.getGraphVertex().get("4"), this.getGraphVertex().get("6"), 14D);
+		this.addEdge(this.getGraphVertex().get("6"), this.getGraphVertex().get("5"), 10D);
+		this.addEdge(this.getGraphVertex().get("7"), this.getGraphVertex().get("6"), 2D);
+		this.addEdge(this.getGraphVertex().get("8"), this.getGraphVertex().get("7"), 1D);
+		this.addEdge(this.getGraphVertex().get("7"), this.getGraphVertex().get("9"), 6D);
+		this.addEdge(this.getGraphVertex().get("8"), this.getGraphVertex().get("9"), 7D);
+		new Dijkstra(this, this.getGraphVertex().get("1"));
+		imprimirGrafoEsparco();
+		  //TESTE REMOÇÃO ARESTA.
+			/*Graph x = new Graph();
+			x.addVertex(1);
+			x.addVertex(2);
+			x.addEdge(x.getGraphVertex().get(1), x.getGraphVertex().get(2));
+			x.removeEdge(x.getGraphVertex().get(1), x.getGraphVertex().get(2));
+			System.out.println(x.getGraphVertex().get(1).getedgesList().size());
+			System.out.println(x.getGraphEdgsList().size());
+			System.out.println(x.getGraphVertex().size());
+			*/
+			
+		
+			/*Graph x = new Graph();
+			x.addVertex(1);
+			x.addVertex(2);
+			x.addEdge(x.getGraphVertex().get(1), x.getGraphVertex().get(2));
+			x.removeVertex(1);
+			System.out.println(x.getGraphVertex().get(2).getedgesList().size());
+			System.out.println(x.getGraphEdgsList().size());
+			System.out.println(x.getGraphVertex().size());
+			*/
+			
+			 //TESTE DE ADJACENCIA NO VERTICE
+			/*Graph x = new Graph();
+			x.addVertex(1);  //TESTE REMOÇÃO ARESTA.
+			x.addVertex(2);
+			x.addEdge(x.getGraphVertex().get(1), x.getGraphVertex().get(2));
+			System.out.println(x.getGraphVertex().get(1).isAdjacent(x.getGraphVertex().get(2)));
+			*/
+			/* //TESTE ADJACENCIA NO GRAFO
+			 Graph x = new Graph();
+			x.addVertex(1);
+			x.addVertex(2);
+			x.addVertex(3);
+			x.addEdge(x.getGraphVertex().get(1), x.getGraphVertex().get(2));
+			System.out.println(x.adjacent(x.getGraphVertex().get(2),x.getGraphVertex().get(1)));
+			*/
+			/**
+			 * teste das buscas.
+			 */
+			/*Graph x = new Graph();
+			x.addVertex("1");
+			x.addVertex("2");
+			x.addVertex("3");
+			x.addEdge(x.getGraphVertex().get("1"), x.getGraphVertex().get("3"), 0D );
+			x.addEdge(x.getGraphVertex().get("3"), x.getGraphVertex().get("2"), 0D);
+			new AlgBFS(x,x.getGraphVertex().get("1"),"1","2");
+			System.out.println();
+			new AlgDFS(x, "1", "2");
+			*/
+			/*Graph x = new Graph();
+			for (int i = 1; i<10; i++){
+				x.addVertex(String.valueOf(i));
+			}
+			
+			x.addEdge(x.getGraphVertex().get("1"), x.getGraphVertex().get("2"), 4D);
+			x.addEdge(x.getGraphVertex().get("1"), x.getGraphVertex().get("8"), 8D);
+			x.addEdge(x.getGraphVertex().get("2"), x.getGraphVertex().get("8"), 11D);
+			x.addEdge(x.getGraphVertex().get("2"), x.getGraphVertex().get("3"), 8D);
+			x.addEdge(x.getGraphVertex().get("3"), x.getGraphVertex().get("4"), 7D);
+			x.addEdge(x.getGraphVertex().get("3"), x.getGraphVertex().get("9"), 2D);
+			x.addEdge(x.getGraphVertex().get("3"), x.getGraphVertex().get("6"), 4D);
+			x.addEdge(x.getGraphVertex().get("4"), x.getGraphVertex().get("5"), 9D);
+			x.addEdge(x.getGraphVertex().get("4"), x.getGraphVertex().get("6"), 14D);
+			x.addEdge(x.getGraphVertex().get("5"), x.getGraphVertex().get("6"), 10D);
+			x.addEdge(x.getGraphVertex().get("6"), x.getGraphVertex().get("7"), 2D);
+			x.addEdge(x.getGraphVertex().get("7"), x.getGraphVertex().get("8"), 1D);
+			x.addEdge(x.getGraphVertex().get("7"), x.getGraphVertex().get("9"), 6D);
+			x.addEdge(x.getGraphVertex().get("8"), x.getGraphVertex().get("9"), 7D);
+			
+			new Dijkstra(x, x.getGraphVertex().get("1"));*/
+	}
+}
